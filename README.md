@@ -1,6 +1,6 @@
 # nogueira-nobre-admin-api
 
-REST API consuming by Nogueira Nobre admin dashboard
+REST API consumed by Nogueira Nobre admin dashboard
 
 ## Prerequisites
 - Install Node.js
