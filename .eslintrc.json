@@ -5,10 +5,12 @@
   "globals": {
     "describe": true,
     "it": true,
-    "app": true,
-    "expect": true,
     "request": true,
+    "expect": true,
+    "supertest": true,
     "before": true,
+    "beforeEach": true,
+    "afterEach": true,
     "td": true,
     "Joi": true,
     "joiAssert": true
