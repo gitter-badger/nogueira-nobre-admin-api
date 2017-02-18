@@ -29,25 +29,22 @@
   },
   "homepage": "https://github.com/nogueira-nobre/nogueira-nobre-admin-api#readme",
   "dependencies": {
-    "babel": "^6.23.0",
-    "babel-cli": "^6.23.0",
-    "babel-preset-node6": "^11.0.0",
     "body-parser": "^1.16.1",
     "express": "^4.14.1",
-    "http-status": "^1.0.1",
     "mongoose": "^4.8.3"
   },
   "devDependencies": {
+    "babel-cli": "^6.23.0",
+    "babel-preset-node6": "^11.0.0",
     "chai": "^3.5.0",
     "eslint": "^3.15.0",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.9.0",
-    "joi": "^10.2.2",
-    "joi-assert": "0.0.3",
     "mocha": "^3.2.0",
-    "supertest": "^3.0.0",
-    "testdouble": "^1.11.1"
+    "sinon": "^1.17.7",
+    "sinon-as-promised": "^4.0.2",
+    "supertest": "^3.0.0"
   }
 }
