@@ -3,9 +3,7 @@ import bodyParser from 'body-parser';
 import routes from './routes';
 import database from './config/database';
 
-database.connect().then(
-  console.log('Conectado ao mongoDB'),
-);
+database.connect();
 
 const app = express();
 app.use(bodyParser.json());
