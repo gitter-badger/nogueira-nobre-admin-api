@@ -58,7 +58,7 @@ describe('Routes: Expedicao', () => {
   });
 
   describe('Route GET /api/expedicoes/{id}', () => {
-    it('should return a expedicao', (done) => {
+    it('should return an expedicao', (done) => {
       request
         .get(`/api/expedicoes/${expectedExpedicao._id}`)
         .end((err, res) => {
@@ -69,7 +69,7 @@ describe('Routes: Expedicao', () => {
   });
 
   describe('Route POST /api/expedicoes', () => {
-    it('should create a expedicao', (done) => {
+    it('should create an expedicao', (done) => {
       const customId = '56cb91bdc3464f14678934ba';
       const newExpedicao = Object.assign({}, { _id: customId }, defaultExpedicao);
       const expectedSavedExpedicao = {
@@ -103,7 +103,7 @@ describe('Routes: Expedicao', () => {
   });
 
   describe('Route PUT /api/expedicoes/{id}', () => {
-    it('should update a expedicao', (done) => {
+    it('should update an expedicao', (done) => {
       const updatedExpedicao = {
         volume: {
           caixa: {
@@ -127,7 +127,7 @@ describe('Routes: Expedicao', () => {
   });
 
   describe('Route DELETE /api/expedicoes/{id}', () => {
-    it('should delete a expedicao', (done) => {
+    it('should delete an expedicao', (done) => {
       request
         .delete(`/api/expedicoes/${expectedExpedicao._id}`)
         .end((err, res) => {
