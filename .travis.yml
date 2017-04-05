@@ -1,11 +1,10 @@
 language: node_js
 
 node_js:
- - 7
  - 6
 
 services:
  - mongodb
 
 script:
- - npm test
+ - npm run test
