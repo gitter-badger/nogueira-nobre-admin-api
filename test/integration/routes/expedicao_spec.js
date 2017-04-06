@@ -1,6 +1,6 @@
 import Expedicao from '../../../src/models/Expedicao';
 
-describe('Routes: Expedicao', () => {
+describe('Route: Expedicoes', () => {
   const defaultExpedicao = {
     nota: 123,
     volume: {
@@ -46,7 +46,7 @@ describe('Routes: Expedicao', () => {
       .then(() => expedicao.save());
   });
 
-  describe('Route GET /api/expedicoes', () => {
+  describe('GET /api/expedicoes', () => {
     it('should return a list of expedicoes', (done) => {
       request
         .get('/api/expedicoes')
@@ -57,7 +57,7 @@ describe('Routes: Expedicao', () => {
     });
   });
 
-  describe('Route GET /api/expedicoes/{id}', () => {
+  describe('GET /api/expedicoes/{id}', () => {
     it('should return an expedicao', (done) => {
       request
         .get(`/api/expedicoes/${expectedExpedicao._id}`)
@@ -68,7 +68,7 @@ describe('Routes: Expedicao', () => {
     });
   });
 
-  describe('Route POST /api/expedicoes', () => {
+  describe('POST /api/expedicoes', () => {
     it('should create an expedicao', (done) => {
       const customId = '56cb91bdc3464f14678934ba';
       const newExpedicao = Object.assign({}, { _id: customId }, defaultExpedicao);
@@ -102,7 +102,7 @@ describe('Routes: Expedicao', () => {
     });
   });
 
-  describe('Route PUT /api/expedicoes/{id}', () => {
+  describe('PUT /api/expedicoes/{id}', () => {
     it('should update an expedicao', (done) => {
       const updatedExpedicao = {
         volume: {
@@ -126,7 +126,7 @@ describe('Routes: Expedicao', () => {
     });
   });
 
-  describe('Route DELETE /api/expedicoes/{id}', () => {
+  describe('DELETE /api/expedicoes/{id}', () => {
     it('should delete an expedicao', (done) => {
       request
         .delete(`/api/expedicoes/${expectedExpedicao._id}`)

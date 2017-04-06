@@ -6,8 +6,9 @@
   "scripts": {
     "start": "babel-node ./server.js",
     "test": "yarn lint && yarn test:unit && yarn test:integration",
-    "test:integration": "mocha --opts test/integration/mocha.opts test/integration/**/*.spec.js",
-    "test:unit": "mocha --opts test/unit/mocha.opts test/unit/**/*.spec.js",
+    "test:unit": "mocha --opts test/unit/mocha.opts test/unit/**/*_spec.js",
+    "test:integration": "mocha --opts test/integration/mocha.opts test/integration/**/*_spec.js",
+    "test:contract": "mocha --opts test/contract/mocha.opts test/contract/**/*_spec.js",
     "lint": "eslint '**/*.js'",
     "lint:fix": "eslint '**/*.js' --fix"
   },
@@ -31,6 +32,8 @@
   "dependencies": {
     "body-parser": "^1.16.1",
     "express": "^4.14.1",
+    "joi": "^10.4.1",
+    "joi-assert": "^0.0.3",
     "mongoose": "^4.8.3",
     "passport-jwt": "^2.2.1"
   },
