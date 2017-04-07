@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/nogueira-nobre/nogueira-nobre-admin-api#readme",
   "dependencies": {
-    "bcrypt": "^1.0.2",
+    "bcrypt": "1.0.2",
     "body-parser": "^1.16.1",
     "express": "^4.14.1",
     "jwt-simple": "^0.5.1",

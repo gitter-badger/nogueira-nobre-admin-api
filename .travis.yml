@@ -10,4 +10,4 @@ services:
  - mongodb
 
 script:
- - npm run test
+ - yarn test
