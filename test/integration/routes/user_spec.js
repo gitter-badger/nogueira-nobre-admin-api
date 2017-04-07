@@ -13,7 +13,6 @@ describe('Route: Users', () => {
 
   const expectedUser = {
     _id: '56cb91bdc3464f14678934ca',
-    __v: 0,
     username: 'tiaogalinha',
     email: 'tiao@galinha.com',
     isAdmin: true,

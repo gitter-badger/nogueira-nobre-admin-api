@@ -4,18 +4,7 @@ import UserController from '../../../src/controllers/user';
 describe('Controller: User', () => {
   const defaultUser = {
     _id: '123abc',
-    __v: 0,
     username: 'tiaogalinha',
-    password: '123abc',
-    email: 'tiao@galinha.com',
-    isAdmin: true,
-  };
-
-  const defaultUserLessPassword = {
-    _id: '123abc',
-    __v: 0,
-    username: 'tiaogalinha',
-    password: '123abc',
     email: 'tiao@galinha.com',
     isAdmin: true,
   };
@@ -26,6 +15,7 @@ describe('Controller: User', () => {
 
   const response = {
     send: sinon.spy(),
+    sendStatus: sinon.spy(),
     status: sinon.stub(),
   };
 
@@ -37,7 +27,7 @@ describe('Controller: User', () => {
 
       return userController.getAll(defaultRequest, response)
         .then(() => {
-          sinon.assert.calledWith(response.send, [defaultUser].map(value => delete value.password));
+          sinon.assert.calledWith(response.send, [defaultUser]);
         });
     });
 
@@ -96,12 +86,12 @@ describe('Controller: User', () => {
     it('Should return a response with the created user', () => {
       response.status.withArgs(201).returns(response);
       User.create = sinon.stub();
-      User.create.withArgs(request.body).resolves(defaultUser);
+      User.create.withArgs(request.body).resolves(201);
       const userController = new UserController(User);
 
       return userController.create(request, response)
         .then(() => {
-          sinon.assert.calledWith(response.send, defaultUser);
+          sinon.assert.calledWith(response.sendStatus, 201);
         });
     });
 
