@@ -2,24 +2,6 @@ import Expedicao from '../../../src/models/Expedicao';
 
 describe('Route: Expedicoes', () => {
   const defaultExpedicao = {
-    nota: 123,
-    volume: {
-      caixa: {
-        altura: 30,
-        largura: 50,
-      },
-      produtos: [
-        { nome: 'papel', quandidade: 30 },
-      ],
-    },
-    empenho: {
-      numero: 123,
-      orgao: { nome: 'Papelaria do jão', cnpj: 123123456 },
-      data: new Date('2017-02-17T02:03:24.339Z'),
-    },
-  };
-
-  const expectedExpedicao = {
     _id: '56cb91bdc3464f14678934ca',
     __v: 0,
     nota: 123,
@@ -39,30 +21,26 @@ describe('Route: Expedicoes', () => {
     },
   };
 
-  beforeEach(() => {
-    const expedicao = new Expedicao(defaultExpedicao);
-    expedicao._id = '56cb91bdc3464f14678934ca';
-    return Expedicao.remove({})
-      .then(() => expedicao.save());
-  });
+  before(() => Expedicao.create(defaultExpedicao));
+  after(() => Expedicao.remove({}));
 
   describe('GET /api/expedicoes', () => {
     it('should return a list of expedicoes', (done) => {
       request
         .get('/api/expedicoes')
         .end((err, res) => {
-          expect(res.body).to.be.eql([expectedExpedicao]);
+          expect(res.body).to.be.eql([defaultExpedicao]);
           done(err);
         });
     });
   });
 
-  describe('GET /api/expedicoes/{id}', () => {
+  describe('GET /api/expedicoes/{expedicao_id}', () => {
     it('should return an expedicao', (done) => {
       request
-        .get(`/api/expedicoes/${expectedExpedicao._id}`)
+        .get(`/api/expedicoes/${defaultExpedicao._id}`)
         .end((err, res) => {
-          expect(res.body).to.be.eql(expectedExpedicao);
+          expect(res.body).to.be.eql(defaultExpedicao);
           done(err);
         });
     });
@@ -70,11 +48,9 @@ describe('Route: Expedicoes', () => {
 
   describe('POST /api/expedicoes', () => {
     it('should create an expedicao', (done) => {
-      const customId = '56cb91bdc3464f14678934ba';
-      const newExpedicao = Object.assign({}, { _id: customId }, defaultExpedicao);
-      const expectedSavedExpedicao = {
+      const newExpedicao = {
+        _id: '56cb91bdc3464f14678934ba',
         __v: 0,
-        _id: customId,
         nota: 123,
         volume: {
           caixa: {
@@ -96,13 +72,13 @@ describe('Route: Expedicoes', () => {
         .post('/api/expedicoes')
         .send(newExpedicao)
         .end((err, res) => {
-          expect(res.body).to.be.eql(expectedSavedExpedicao);
+          expect(res.body).to.be.eql(newExpedicao);
           done(err);
         });
     });
   });
 
-  describe('PUT /api/expedicoes/{id}', () => {
+  describe('PUT /api/expedicoes/{expedicao_id}', () => {
     it('should update an expedicao', (done) => {
       const updatedExpedicao = {
         volume: {
@@ -117,7 +93,7 @@ describe('Route: Expedicoes', () => {
       };
 
       request
-        .put(`/api/expedicoes/${expectedExpedicao._id}`)
+        .put(`/api/expedicoes/${defaultExpedicao._id}`)
         .send(updatedExpedicao)
         .end((err, res) => {
           expect(res.body).to.be.eql({ n: 1, nModified: 1, ok: 1 });
@@ -126,10 +102,10 @@ describe('Route: Expedicoes', () => {
     });
   });
 
-  describe('DELETE /api/expedicoes/{id}', () => {
+  describe('DELETE /api/expedicoes/{expedicao_id}', () => {
     it('should delete an expedicao', (done) => {
       request
-        .delete(`/api/expedicoes/${expectedExpedicao._id}`)
+        .delete(`/api/expedicoes/${defaultExpedicao._id}`)
         .end((err, res) => {
           expect(res.status).to.be.eql(204);
           done(err);

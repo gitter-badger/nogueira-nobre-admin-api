@@ -10,7 +10,7 @@ class ExpedicaoController {
   }
 
   getById(req, res) {
-    return this.Expedicao.findById(req.params.id)
+    return this.Expedicao.findById(req.params.expedicao_id)
       .then(expedicao => res.send(expedicao))
       .catch(err => res.status(400).send(err.message));
   }
@@ -22,13 +22,13 @@ class ExpedicaoController {
   }
 
   update(req, res) {
-    return this.Expedicao.update(req.params.id, req.body)
+    return this.Expedicao.update(req.params.expedicao_id, req.body)
       .then(rowsUpdated => res.send(rowsUpdated))
       .catch(err => res.status(412).send(err.message));
   }
 
   delete(req, res) {
-    return this.Expedicao.remove({ _id: req.params.id })
+    return this.Expedicao.remove({ _id: req.params.expedicao_id })
       .then(() => res.sendStatus(204))
       .catch(err => res.status(400).send(err.message));
   }
