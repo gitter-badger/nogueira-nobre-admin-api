@@ -7,7 +7,7 @@ services:
  - mongodb
 
 before_script:
- - npm install
+ - yarn install
 
 script:
- - npm run test
+ - yarn test
