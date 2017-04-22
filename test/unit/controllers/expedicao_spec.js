@@ -3,7 +3,7 @@ import ExpedicaoController from '../../../src/controllers/expedicao';
 
 describe('Controllers: Expedicao', () => {
   const defaultExpedicao = {
-    _id: '123AS',
+    _id: '123abc',
     __v: 0,
     nota: 123,
     volume: {
@@ -25,14 +25,16 @@ describe('Controllers: Expedicao', () => {
     params: {},
   };
 
+  const response = {
+    send: sinon.spy(),
+    sendStatus: sinon.spy(),
+    status: sinon.stub(),
+  };
+
   describe('getAll(): Get all expedicoes', () => {
-    it('Should call send with a list of expedicoes', () => {
-      const response = {
-        send: sinon.spy(),
-      };
+    it('Should return a response with a list of expedicoes', () => {
       Expedicao.find = sinon.stub();
       Expedicao.find.withArgs({}).resolves([defaultExpedicao]);
-
       const expedicaoController = new ExpedicaoController(Expedicao);
 
       return expedicaoController.getAll(defaultRequest, response)
@@ -41,11 +43,7 @@ describe('Controllers: Expedicao', () => {
         });
     });
 
-    it('Should return 400 status code when an error occours', () => {
-      const response = {
-        send: sinon.spy(),
-        status: sinon.stub(),
-      };
+    it('Should return 400 status code when an error occurs', () => {
       response.status.withArgs(400).returns(response);
       Expedicao.find = sinon.stub();
       Expedicao.find.withArgs({}).rejects('Error');
@@ -61,17 +59,12 @@ describe('Controllers: Expedicao', () => {
   });
 
   describe('getById(): Get an expedicao', () => {
-    it('Should call send with an expedicao', () => {
-      const fakeId = 'fake-id';
+    it('Should return a response with an expedicao', () => {
       const request = {
-        params: { id: fakeId },
-      };
-      const response = {
-        send: sinon.spy(),
+        params: { expedicao_id: '123abc' },
       };
       Expedicao.findById = sinon.stub();
-      Expedicao.findById.withArgs(fakeId).resolves(defaultExpedicao);
-
+      Expedicao.findById.withArgs(request.params.expedicao_id).resolves(defaultExpedicao);
       const expedicaoController = new ExpedicaoController(Expedicao);
 
       return expedicaoController.getById(request, response)
@@ -80,15 +73,10 @@ describe('Controllers: Expedicao', () => {
         });
     });
 
-    it('Should return 400 status code when an error occours', () => {
-      const response = {
-        send: sinon.spy(),
-        status: sinon.stub(),
-      };
+    it('Should return 400 status code when an error occurs', () => {
       response.status.withArgs(400).returns(response);
       Expedicao.findById = sinon.stub();
       Expedicao.findById.withArgs().rejects('Error');
-
       const expedicaoController = new ExpedicaoController(Expedicao);
 
       return expedicaoController.getById(defaultRequest, response)
@@ -118,33 +106,24 @@ describe('Controllers: Expedicao', () => {
           data: new Date(),
         },
       };
-      const requestWithBody = Object.assign({}, { body: newExpedicao }, defaultRequest);
-      const response = {
-        send: sinon.spy(),
-        status: sinon.stub(),
-      };
+      const request = Object.assign({}, { body: newExpedicao }, defaultRequest);
       response.status.withArgs(201).returns(response);
       Expedicao.create = sinon.stub();
-      Expedicao.create.withArgs(requestWithBody.body).resolves(defaultExpedicao);
-
+      Expedicao.create.withArgs(request.body).resolves(defaultExpedicao);
       const expedicaoController = new ExpedicaoController(Expedicao);
 
-      return expedicaoController.create(requestWithBody, response)
+      return expedicaoController.create(request, response)
         .then(() => {
           sinon.assert.calledWith(response.send, defaultExpedicao);
         });
     });
 
-    it('Should return 412 status code when an error occours', () => {
-      const response = {
-        send: sinon.spy(),
-        status: sinon.stub(),
-      };
+    it('Should return 412 status code when an error occurs', () => {
       response.status.withArgs(412).returns(response);
       Expedicao.create = sinon.stub();
       Expedicao.create.withArgs().rejects('Error');
-
       const expedicaoController = new ExpedicaoController(Expedicao);
+
       return expedicaoController.create(defaultRequest, response)
         .then(() => {
           sinon.assert.calledWith(response.status, 412);
@@ -156,7 +135,7 @@ describe('Controllers: Expedicao', () => {
   describe('update(): Update an expedicao', () => {
     it('Should update an expedicao', () => {
       const request = {
-        params: { id: 'fake-id' },
+        params: { expedicao_id: '123abc' },
         body: {
           volume: {
             caixa: {
@@ -167,29 +146,20 @@ describe('Controllers: Expedicao', () => {
         },
       };
       const rowsUpdated = { n: 1, nModified: 1, ok: 1 };
-      const response = {
-        send: sinon.spy(),
-      };
-
       Expedicao.update = sinon.stub();
-      Expedicao.update.withArgs(request.params.id, request.body).resolves(rowsUpdated);
-
+      Expedicao.update.withArgs(request.params.expedicao_id, request.body).resolves(rowsUpdated);
       const expedicaoController = new ExpedicaoController(Expedicao);
+
       return expedicaoController.update(request, response)
         .then(() => {
           sinon.assert.calledWith(response.send, rowsUpdated);
         });
     });
 
-    it('Should return 412 status code when an error occours', () => {
-      const response = {
-        send: sinon.spy(),
-        status: sinon.stub(),
-      };
+    it('Should return 412 status code when an error occurs', () => {
       response.status.withArgs(412).returns(response);
       Expedicao.update = sinon.stub();
       Expedicao.update.withArgs().rejects('Error');
-
       const expedicaoController = new ExpedicaoController(Expedicao);
 
       return expedicaoController.update(defaultRequest, response)
@@ -202,40 +172,30 @@ describe('Controllers: Expedicao', () => {
 
   describe('delete(): Delete an expedicao', () => {
     it('Should delete a expedicao', () => {
-      const fakeId = 'fake-id';
       const request = {
-        params: { id: fakeId },
+        params: { expedicao_id: '123abc' },
       };
-      const response = {
-        sendStatus: sinon.spy(),
-      };
-
       Expedicao.remove = sinon.stub();
-      Expedicao.remove.withArgs({ _id: fakeId }).resolves(204);
-
+      Expedicao.remove.withArgs({ _id: request.params.expedicao_id }).resolves(204);
       const expedicaoController = new ExpedicaoController(Expedicao);
+
       return expedicaoController.delete(request, response)
-      .then(() => {
-        sinon.assert.calledWith(response.sendStatus, 204);
-      });
+        .then(() => {
+          sinon.assert.calledWith(response.sendStatus, 204);
+        });
     });
 
-    it('Should return 400 status code with an error occours', () => {
-      const response = {
-        send: sinon.spy(),
-        status: sinon.stub(),
-      };
-
+    it('Should return 400 status code with an error occurs', () => {
       response.status.withArgs(400).returns(response);
       Expedicao.remove = sinon.stub();
       Expedicao.remove.withArgs().rejects('Error');
-
       const expedicaoController = new ExpedicaoController(Expedicao);
+
       return expedicaoController.delete(defaultRequest, response)
-      .then(() => {
-        sinon.assert.calledWith(response.status, 400);
-        sinon.assert.calledWith(response.send, 'Error');
-      });
+        .then(() => {
+          sinon.assert.calledWith(response.status, 400);
+          sinon.assert.calledWith(response.send, 'Error');
+        });
     });
   });
 });

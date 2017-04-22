@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "babel-node ./server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "test:integration": "mocha --opts test/integration/mocha.opts test/integration/**/*.spec.js",
-    "test:unit": "mocha --opts test/unit/mocha.opts test/unit/**/*.spec.js",
+    "test": "yarn lint && yarn test:u && yarn test:i",
+    "test:u": "mocha --opts test/unit/mocha.opts test/unit/**/*_spec.js",
+    "test:i": "mocha --opts test/integration/mocha.opts test/integration/**/*_spec.js",
+    "test:c": "mocha --opts test/contract/mocha.opts test/contract/**/*_spec.js",
     "lint": "eslint '**/*.js'",
     "lint:fix": "eslint '**/*.js' --fix"
   },
@@ -29,9 +30,13 @@
   },
   "homepage": "https://github.com/nogueira-nobre/nogueira-nobre-admin-api#readme",
   "dependencies": {
+    "bcrypt": "1.0.2",
     "body-parser": "^1.16.1",
     "express": "^4.14.1",
-    "mongoose": "^4.8.3"
+    "jwt-simple": "^0.5.1",
+    "mongoose": "^4.8.3",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.2.1"
   },
   "devDependencies": {
     "babel-cli": "^6.23.0",
@@ -42,6 +47,8 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.9.0",
+    "joi": "^10.4.1",
+    "joi-assert": "^0.0.3",
     "mocha": "^3.2.0",
     "sinon": "^1.17.7",
     "sinon-as-promised": "^4.0.2",

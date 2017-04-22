@@ -8,6 +8,9 @@
     "request": true,
     "expect": true,
     "before": true,
+    "after": true,
+    "Joi": true,
+    "joiAssert": true,
     "beforeEach": true,
     "afterEach": true,
     "sinon": true
