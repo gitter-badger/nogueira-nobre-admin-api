@@ -5,6 +5,7 @@ describe('Controller: User', () => {
   const defaultUser = {
     _id: '123abc',
     username: 'tiaogalinha',
+    password: '123456',
     email: 'tiao@galinha.com',
     isAdmin: true,
   };
@@ -26,9 +27,9 @@ describe('Controller: User', () => {
       const userController = new UserController(User);
 
       return userController.getAll(defaultRequest, response)
-        .then(() => {
-          sinon.assert.calledWith(response.send, [defaultUser]);
-        });
+      .then(() => {
+        sinon.assert.calledWith(response.send, [defaultUser]);
+      });
     });
 
     it('Should return 400 status code when an error occurs', () => {
@@ -38,10 +39,10 @@ describe('Controller: User', () => {
       const userController = new UserController(User);
 
       return userController.getAll(defaultRequest, response)
-        .then(() => {
-          sinon.assert.calledWith(response.status, 400);
-          sinon.assert.calledWith(response.send, 'Error');
-        });
+      .then(() => {
+        sinon.assert.calledWith(response.status, 400);
+        sinon.assert.calledWith(response.send, 'Error');
+      });
     });
   });
 
@@ -56,9 +57,9 @@ describe('Controller: User', () => {
       const userController = new UserController(User);
 
       return userController.getById(request, response)
-        .then(() => {
-          sinon.assert.calledWith(response.send, defaultUser);
-        });
+      .then(() => {
+        sinon.assert.calledWith(response.send, defaultUser);
+      });
     });
 
     it('Should return 400 status code when an error occurs', () => {
@@ -68,10 +69,10 @@ describe('Controller: User', () => {
       const userController = new UserController(User);
 
       return userController.getById(defaultRequest, response)
-        .then(() => {
-          sinon.assert.calledWith(response.status, 400);
-          sinon.assert.calledWith(response.send, 'Error');
-        });
+      .then(() => {
+        sinon.assert.calledWith(response.status, 400);
+        sinon.assert.calledWith(response.send, 'Error');
+      });
     });
   });
 
@@ -90,9 +91,9 @@ describe('Controller: User', () => {
       const userController = new UserController(User);
 
       return userController.create(request, response)
-        .then(() => {
-          sinon.assert.calledWith(response.sendStatus, 201);
-        });
+      .then(() => {
+        sinon.assert.calledWith(response.sendStatus, 201);
+      });
     });
 
     it('Should return 412 status if an error occurs', () => {
@@ -102,10 +103,10 @@ describe('Controller: User', () => {
       const userController = new UserController(User);
 
       return userController.create(defaultRequest, response)
-        .then(() => {
-          sinon.assert.calledWith(response.status, 412);
-          sinon.assert.calledWith(response.send, 'Error');
-        });
+      .then(() => {
+        sinon.assert.calledWith(response.status, 412);
+        sinon.assert.calledWith(response.send, 'Error');
+      });
     });
   });
 });

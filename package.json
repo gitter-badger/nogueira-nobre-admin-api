@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "babel-node ./server.js",
-    "test": "yarn lint && yarn test:unit && yarn test:integration",
-    "test:unit": "mocha --opts test/unit/mocha.opts test/unit/**/*_spec.js",
-    "test:integration": "mocha --opts test/integration/mocha.opts test/integration/**/*_spec.js",
-    "test:contract": "mocha --opts test/contract/mocha.opts test/contract/**/*_spec.js",
+    "test": "yarn lint && yarn test:u && yarn test:i",
+    "test:u": "mocha --opts test/unit/mocha.opts test/unit/**/*_spec.js",
+    "test:i": "mocha --opts test/integration/mocha.opts test/integration/**/*_spec.js",
+    "test:c": "mocha --opts test/contract/mocha.opts test/contract/**/*_spec.js",
     "lint": "eslint '**/*.js'",
     "lint:fix": "eslint '**/*.js' --fix"
   },

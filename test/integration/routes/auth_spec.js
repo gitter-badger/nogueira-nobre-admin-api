@@ -1,7 +1,6 @@
 import User from '../../../src/models/User';
-import { createJWT } from '../../../src/config/auth';
 
-describe('Route: Users', () => {
+describe('Route: Auth', () => {
   const defaultUser = {
     _id: '56cb91bdc3464f14678934ca',
     __v: 0,
@@ -17,25 +16,24 @@ describe('Route: Users', () => {
     email: 'tiao@galinha.com',
     isAdmin: true,
   };
-  let token;
 
-  before((done) => {
-    User.create(defaultUser)
-      .then((user) => {
-        token = createJWT({ sub: user._id });
-      })
-      .then(() => done());
-  });
+  before(() => User.create(defaultUser));
 
   after(() => User.remove({}));
 
-  describe('GET /api/users', () => {
-    it('Should return a list of users', (done) => {
+  describe('POST /api/auth/login', () => {
+    const credentials = {
+      username: 'tiaogalinha',
+      password: '123456',
+    };
+
+    it('Should return a token and user data if your credentials are valid', (done) => {
       request
-        .get('/api/users')
-        .set('Authorization', `JWT ${token}`)
+        .post('/api/auth/login')
+        .send(credentials)
         .end((err, res) => {
-          expect(res.body).to.be.eql([expectedUser]);
+          expect(res.body.token).to.be.a('string');
+          expect(res.body.user).to.be.eql(expectedUser);
           done(err);
         });
     });
