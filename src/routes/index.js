@@ -5,9 +5,10 @@ import authRotue from './auth';
 
 const router = express.Router();
 
-router.get('/api', (req, res) => res.send('Nogueira Nobre V1 API'));
-router.use('/api/auth', authRotue);
-router.use('/api/expedicoes', expedicaoRoute);
-router.use('/api/users', userRoute);
+router.get('/', (req, res) => res.redirect('/api'));
+router.get('/api/v1', (req, res) => res.send('Nogueira Nobre V1 API'));
+router.use('/api/v1/auth', authRotue);
+router.use('/api/v1/expedicoes', expedicaoRoute);
+router.use('/api/v1/users', userRoute);
 
 export default router;

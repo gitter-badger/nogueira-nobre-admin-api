@@ -4,12 +4,13 @@ import routes from './routes';
 import database from './config/database';
 import { initializeAuth } from './config/auth';
 
-database.connect();
-
 const app = express();
-app.use(bodyParser.json());
-app.use(initializeAuth());
-app.use('/', routes);
+database.once('open', () => {
+  app.use(bodyParser.json());
+  app.use(initializeAuth());
+  app.use('/', routes);
+});
+
+database.on('error', console.error.bind(console, 'connection error:'));
 
 export default app;
-
