@@ -1,8 +1,21 @@
 import mongoose from 'mongoose';
 
-const mongodbUrl = process.env.MONGODB_URL || 'mongodb://localhost/nogueira-nobre';
+const options = {
+  server: {
+    socketOptions: {
+      keepAlive: 300000,
+      connectTimeoutMS: 30000,
+    },
+  },
+  replset: {
+    socketOptions: {
+      keepAlive: 300000,
+      connectTimeoutMS: 30000,
+    },
+  },
+};
+const mongodbUrl = process.env.MONGODB_URL || 'mongodb://localhost:27017/nogueira-nobre';
 
-const connect = () => mongoose.connect(mongodbUrl);
+mongoose.connect(mongodbUrl, options);
 
-export default { connect };
-
+export default mongoose.connection;

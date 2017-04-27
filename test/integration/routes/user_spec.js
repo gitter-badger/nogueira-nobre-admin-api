@@ -29,10 +29,10 @@ describe('Route: Users', () => {
 
   after(() => User.remove({}));
 
-  describe('GET /api/users', () => {
+  describe('GET /api/v1/users', () => {
     it('Should return a list of users', (done) => {
       request
-        .get('/api/users')
+        .get('/api/v1/users')
         .set('Authorization', `JWT ${token}`)
         .end((err, res) => {
           expect(res.body).to.be.eql([expectedUser]);

@@ -26,7 +26,7 @@ describe('Schema: Expedicoes', () => {
       .then(() => done());
   });
 
-  describe('GET /expedicoes', () => {
+  describe('GET /api/v1/expedicoes', () => {
     const expedicaoSchemaList = Joi.array().items(Joi.object().keys({
       _id: Joi.string(),
       __v: Joi.number(),
@@ -53,7 +53,7 @@ describe('Schema: Expedicoes', () => {
 
     it('Should validade a list of expedicoes', (done) => {
       request
-      .get('/api/expedicoes')
+      .get('/api/v1/expedicoes')
       .end((err, res) => {
         joiAssert(res.body, expedicaoSchemaList);
         done();

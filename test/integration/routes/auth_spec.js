@@ -29,7 +29,7 @@ describe('Route: Auth', () => {
 
     it('Should return a token and user data if your credentials are valid', (done) => {
       request
-        .post('/api/auth/login')
+        .post('/api/v1/auth/login')
         .send(credentials)
         .end((err, res) => {
           expect(res.body.token).to.be.a('string');
