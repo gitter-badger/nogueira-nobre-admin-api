@@ -9,8 +9,8 @@
     "test:u": "mocha --opts test/unit/mocha.opts test/unit/**/*_spec.js",
     "test:i": "mocha --opts test/integration/mocha.opts test/integration/**/*_spec.js",
     "test:c": "mocha --opts test/contract/mocha.opts test/contract/**/*_spec.js",
-    "lint": "eslint '**/*.js'",
-    "lint:fix": "eslint '**/*.js' --fix"
+    "lint": "node_modules/eslint/bin/eslint.js '**/*.js'",
+    "lint:fix": "node_modules/eslint/bin/eslint.js '**/*.js' --fix"
   },
   "repository": {
     "type": "git",

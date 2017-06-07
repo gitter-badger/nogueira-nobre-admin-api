@@ -27,7 +27,7 @@ describe('Route: Auth', () => {
       password: '123456',
     };
 
-    it('Should return a token and user data if your credentials are valid', (done) => {
+    it('Should return a token and user data if your credentials was validated', (done) => {
       request
         .post('/api/v1/auth/login')
         .send(credentials)
