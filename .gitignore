@@ -45,6 +45,7 @@ jspm_packages
 
 # Yarn Integrity file
 .yarn-integrity
+yarn.lock
 
 # VS Code directory
 .vscode
