@@ -2,12 +2,11 @@ import AWS from 'aws-sdk';
 import sendEmailBancoCotacaoContato from '../../../src/controllers/email';
 
 describe('Controller: Email', () => {
-  const response = {
+  const defaultResponse = {
     send: sinon.spy(),
-    status: sinon.stub(),
   };
 
-  const request = {
+  const defaultRequest = {
     body: {
       name: 'Tiao',
       email: 'tiao@gmail.com',
@@ -18,9 +17,6 @@ describe('Controller: Email', () => {
 
   describe('sendEmailBancoCotacaoContato()', () => {
     it('Should send an email from nao-responda@bancocotacao.com.br to contato@bancodecotacao.com.br', () => {
-      AWS.SES.prototype.sendEmail = sinon.stub();
-      AWS.SES.prototype.sendEmail.yields(null, { messageID: '123-abc' });
-
       const params = {
         Source: 'nao-responda@bancodecotacao.com.br',
         Destination: {
@@ -33,41 +29,70 @@ describe('Controller: Email', () => {
             Text: {
               Charset: 'UTF-8',
               Data: `
-                    Nome: ${request.body.name}
+                    Nome: ${defaultRequest.body.name}
 
-                    E-mail: ${request.body.email}
+                    E-mail: ${defaultRequest.body.email}
 
-                    Telefone: ${request.body.tel}
+                    Telefone: ${defaultRequest.body.tel}
 
-                    Mensagem: ${request.body.msg}`,
+                    Mensagem: ${defaultRequest.body.msg}`,
             },
           },
           Subject: {
             Charset: 'UTF-8',
-            Data: `Contato ${request.body.name}`,
+            Data: `Contato ${defaultRequest.body.name}`,
           },
         },
       };
 
+      AWS.SES.prototype.sendEmail = sinon.stub();
+      AWS.SES.prototype.sendEmail.yields(false, { messageID: '123-abc' });
+
       const awsSES = new AWS.SES();
       awsSES.sendEmail.withArgs(params);
 
-      return sendEmailBancoCotacaoContato(request, response)
+      return sendEmailBancoCotacaoContato(defaultRequest, defaultResponse)
         .then(() => {
-          sinon.assert.calledWith(response.send, { messageID: '123-abc' });
+          sinon.assert.calledWith(defaultResponse.send, { messageID: '123-abc' });
         });
     });
 
     it('Should return status code 412 when missing name, email or msg from request', () => {
-      const requestWhitoutFields = {
+      const request = {
         body: {},
+      };
+
+      const response = {
+        send: sinon.spy(),
+        status: sinon.stub(),
       };
 
       response.status.withArgs(412).returns(response);
 
-      return sendEmailBancoCotacaoContato(requestWhitoutFields, response)
+      return sendEmailBancoCotacaoContato(request, response)
         .then(() => {
           sinon.assert.calledWith(response.send, { err: true, msg: 'Nome, e-mail ou mensagem não foram preenchidos.' });
+        });
+    });
+
+    it('Should return status code 400 when an error occurs in AWS SES', () => {
+      const response = {
+        send: sinon.spy(),
+        status: sinon.stub(),
+      };
+
+      response.status.withArgs(400).returns(response);
+
+      AWS.SES.prototype.sendEmail = sinon.stub();
+      AWS.SES.prototype.sendEmail.yields(true, { msg: 'Error' });
+
+      const awsSES = new AWS.SES();
+      awsSES.sendEmail.withArgs({});
+
+      return sendEmailBancoCotacaoContato(defaultRequest, response)
+        .catch(() => {
+          sinon.assert.calledWith(response.send, { err: true, msg: true });
+          sinon.assert.calledWith(response.status, 400);
         });
     });
   });
