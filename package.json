@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "babel-node ./server.js",
-    "test": "yarn lint && yarn test:u && yarn test:i",
+    "test": "npm run lint && npm run test:u && npm run test:i",
     "test:u": "node_modules/.bin/mocha --opts test/unit/mocha.opts test/unit/**/*_spec.js",
     "test:i": "node_modules/.bin/mocha --opts test/integration/mocha.opts test/integration/**/*_spec.js",
     "test:c": "node_modules/.bin/mocha --opts test/contract/mocha.opts test/contract/**/*_spec.js",

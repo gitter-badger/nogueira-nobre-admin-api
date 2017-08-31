@@ -20,4 +20,10 @@ REST API consumed by Nogueira Nobre admin dashboard
 
 `$ npm start`
 
+Need to set envs:
+- AWS_REGION
+- AWS_ACCESS_KEY
+- AWS_SECRET_ACCESS_KEY
+
+
 
