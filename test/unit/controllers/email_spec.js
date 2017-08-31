@@ -84,14 +84,14 @@ describe('Controller: Email', () => {
       response.status.withArgs(400).returns(response);
 
       AWS.SES.prototype.sendEmail = sinon.stub();
-      AWS.SES.prototype.sendEmail.yields(true, { msg: 'Error' });
+      AWS.SES.prototype.sendEmail.yields('Error', null);
 
       const awsSES = new AWS.SES();
       awsSES.sendEmail.withArgs({});
 
       return sendEmailBancoCotacaoContato(defaultRequest, response)
         .catch(() => {
-          sinon.assert.calledWith(response.send, { err: true, msg: true });
+          sinon.assert.calledWith(response.send, { err: true, msg: 'Error' });
           sinon.assert.calledWith(response.status, 400);
         });
     });
