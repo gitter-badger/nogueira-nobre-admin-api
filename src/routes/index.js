@@ -2,7 +2,7 @@ import express from 'express';
 import expedicaoRoute from './expedicao';
 import userRoute from './user';
 import authRotue from './auth';
-import emailRoute from './email';
+import emailBancoCotacaoRoute from './email-banco-cotacao';
 
 const router = express.Router();
 
@@ -11,6 +11,6 @@ router.get('/api/v1', (req, res) => res.send('Nogueira Nobre V1 API'));
 router.use('/api/v1/auth', authRotue);
 router.use('/api/v1/expedicoes', expedicaoRoute);
 router.use('/api/v1/users', userRoute);
-router.use('/api/v1/email', emailRoute);
+router.use('/api/v1/email/bancocotacao', emailBancoCotacaoRoute);
 
 export default router;

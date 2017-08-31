@@ -1,4 +1,4 @@
-describe('Route: Email', () => {
+describe('Route: EmailBancoContato', () => {
   describe('POST /api/v1/email/bancocotacao/contato', () => {
     const defaultEmail = {
       name: 'Tiao',

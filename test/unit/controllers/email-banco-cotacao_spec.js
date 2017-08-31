@@ -1,7 +1,7 @@
 import AWS from 'aws-sdk';
-import sendEmailBancoCotacaoContato from '../../../src/controllers/email';
+import sendEmailBancoCotacaoContato from '../../../src/controllers/email-banco-cotacao';
 
-describe('Controller: Email', () => {
+describe('Controller: EmailBancoContato', () => {
   const defaultResponse = {
     send: sinon.spy(),
   };
