@@ -1,8 +1,9 @@
 import express from 'express';
-import sendEmailBancoCotacaoContato from '../controllers/email-banco-cotacao';
+import emailController from '../controllers/email-banco-cotacao';
 
 const router = express.Router();
 
-router.post('/contato', (req, res) => sendEmailBancoCotacaoContato(req, res));
+router.post('/contato', (req, res) => emailController.sendEmailBancoCotacaoContato(req, res));
+router.post('/cotacao', (req, res) => emailController.sendEmailBancoCotacaoCotacao(req, res));
 
 export default router;
