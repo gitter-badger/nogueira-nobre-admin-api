@@ -21,3 +21,4 @@ yarn.lock
 *.tgz
 .yarn-integrity
 .vscode
+.DS_Store
