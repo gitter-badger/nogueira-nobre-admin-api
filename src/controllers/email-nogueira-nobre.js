@@ -1,6 +1,6 @@
 import AWS from 'aws-sdk';
 
-function sendEmailBancoCotacaoContato(req, res) {
+function sendEmailNogueiraNobreContato(req, res) {
   return new Promise((resolve, reject) => {
     if (!req.body.name || !req.body.email || !req.body.msg) {
       res.status(412).send({ err: true, msg: 'Nome, e-mail ou mensagem não foram preenchidos.' });
@@ -9,7 +9,7 @@ function sendEmailBancoCotacaoContato(req, res) {
       const awsSES = new AWS.SES();
 
       const params = {
-        Source: 'nao-responda@bancodecotacao.com.br',
+        Source: 'nao-responda@nogueiranobre.com',
         Destination: {
           ToAddresses: [
             req.body.toAddress,
@@ -46,40 +46,8 @@ function sendEmailBancoCotacaoContato(req, res) {
   });
 }
 
-function sendEmailBancoCotacaoCotacao(req, res) {
-  return new Promise((resolve, reject) => {
-    if (!req.body.name || !req.body.file) {
-      res.status(412).send({ err: true, msg: 'Nome ou arquivo não foram preenchidos.' });
-      reject();
-    } else {
-      const awsSES = new AWS.SES();
-
-      const params = {
-        Source: 'nao-responda@bancodecotacao.com.br',
-        Destinations: [
-          req.body.toAddress,
-        ],
-        RawMessage: {
-          Data: `${req.body.file}`,
-        },
-      };
-
-      awsSES.sendRawEmail(params, (err, data) => {
-        if (err) {
-          res.status(400).send({ err: true, msg: err });
-          reject();
-        } else {
-          res.send(data);
-          resolve();
-        }
-      });
-    }
-  });
-}
-
-const emailController = {
-  sendEmailBancoCotacaoContato,
-  sendEmailBancoCotacaoCotacao,
+const emailNogueiraNobreController = {
+  sendEmailNogueiraNobreContato,
 };
 
-export default emailController;
+export default emailNogueiraNobreController;

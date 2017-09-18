@@ -15,16 +15,17 @@ describe('Controller: EmailBancoCotacao', () => {
         name: 'Tiao',
         email: 'tiao@gmail.com',
         tel: '62996810057',
-        msg: 'é noís',
+        msg: 'viiiila!',
+        toAddress: 'teste@bancodecotacao.com.br',
       },
     };
 
-    it('Should send an email from nao-responda@bancocotacao.com.br to contato@bancodecotacao.com.br', () => {
+    it('Should send an email from nao-responda@bancocotacao.com.br to requested email', () => {
       const params = {
         Source: 'nao-responda@bancodecotacao.com.br',
         Destination: {
           ToAddresses: [
-            'contato@bancodecotacao.com.br',
+            defaultRequest.body.toAddress,
           ],
         },
         Message: {
@@ -33,11 +34,8 @@ describe('Controller: EmailBancoCotacao', () => {
               Charset: 'UTF-8',
               Data: `
                     Nome: ${defaultRequest.body.name}
-
                     E-mail: ${defaultRequest.body.email}
-
                     Telefone: ${defaultRequest.body.tel}
-
                     Mensagem: ${defaultRequest.body.msg}`,
             },
           },
@@ -103,14 +101,15 @@ describe('Controller: EmailBancoCotacao', () => {
       body: {
         name: 'Tiao',
         file: 'planilha.xls',
+        toAddress: 'teste@bancodecotacao.com.br',
       },
     };
 
-    it('Should send an email from nao-responda@bancodecotacao to cotacao@bancodecotacao.com.br', () => {
+    it('Should send an email from nao-responda@bancodecotacao to requested email', () => {
       const params = {
         Source: 'nao-responda@bancodecotacao.com.br',
         Destinations: [
-          'gustavo.mtborges@gmail.com',
+          defaultRequest.body.toAddress,
         ],
         RawMessage: {
           Data: {},
