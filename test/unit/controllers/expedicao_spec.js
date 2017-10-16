@@ -147,7 +147,9 @@ describe('Controllers: Expedicao', () => {
       };
       const rowsUpdated = { n: 1, nModified: 1, ok: 1 };
       Expedicao.update = sinon.stub();
-      Expedicao.update.withArgs(request.params.expedicao_id, request.body).resolves(rowsUpdated);
+      Expedicao.update
+      .withArgs({ _id: request.params.expedicao_id }, request.body)
+      .resolves(rowsUpdated);
       const expedicaoController = new ExpedicaoController(Expedicao);
 
       return expedicaoController.update(request, response)
@@ -159,7 +161,9 @@ describe('Controllers: Expedicao', () => {
     it('Should return 412 status code when an error occurs', () => {
       response.status.withArgs(412).returns(response);
       Expedicao.update = sinon.stub();
-      Expedicao.update.withArgs().rejects('Error');
+      Expedicao.update
+      .withArgs()
+      .rejects('Error');
       const expedicaoController = new ExpedicaoController(Expedicao);
 
       return expedicaoController.update(defaultRequest, response)
