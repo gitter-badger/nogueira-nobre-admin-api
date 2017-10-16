@@ -5,12 +5,12 @@
   "main": "server.js",
   "scripts": {
     "start": "babel-node ./server.js",
-    "test": "npm run lint && npm run test:u && npm run test:i",
-    "test:u": "node_modules/.bin/mocha --opts test/unit/mocha.opts test/unit/**/*_spec.js",
-    "test:i": "node_modules/.bin/mocha --opts test/integration/mocha.opts test/integration/**/*_spec.js",
-    "test:c": "node_modules/.bin/mocha --opts test/contract/mocha.opts test/contract/**/*_spec.js",
+    "test": "npm run lint && npm run test_u && npm run test_i",
+    "test_u": "node_modules/.bin/mocha --opts test/unit/mocha.opts test/unit/**/*_spec.js",
+    "test_i": "node_modules/.bin/mocha --opts test/integration/mocha.opts test/integration/**/*_spec.js",
+    "test_c": "node_modules/.bin/mocha --opts test/contract/mocha.opts test/contract/**/*_spec.js",
     "lint": "node_modules/.bin/eslint '**/*.js'",
-    "lint:fix": "node_modules/.bin/eslint '**/*.js' --fix"
+    "lint_fix": "node_modules/.bin/eslint '**/*.js' --fix"
   },
   "repository": {
     "type": "git",
