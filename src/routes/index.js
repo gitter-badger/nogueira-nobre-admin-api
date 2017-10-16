@@ -3,7 +3,7 @@ import expedicaoRoute from './expedicao';
 import userRoute from './user';
 import authRotue from './auth';
 import emailBancoCotacaoRoute from './email-banco-cotacao';
-import emailNogueiraNobre from './email-nogueira-nobre'
+import emailNogueiraNobre from './email-nogueira-nobre';
 
 const router = express.Router();
 
