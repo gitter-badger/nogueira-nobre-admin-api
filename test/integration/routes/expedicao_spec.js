@@ -21,8 +21,8 @@ describe('Route: Expedicoes', () => {
     },
   };
 
-  before(() => Expedicao.create(defaultExpedicao));
-  after(() => Expedicao.remove({}));
+  beforeEach(() => Expedicao.create(defaultExpedicao));
+  afterEach(() => Expedicao.remove({}));
 
   describe('GET /api/v1/expedicoes', () => {
     it('should return a list of expedicoes', (done) => {
@@ -71,6 +71,7 @@ describe('Route: Expedicoes', () => {
       request
         .post('/api/v1/expedicoes')
         .send(newExpedicao)
+        .expect(201)
         .end((err, res) => {
           expect(res.body).to.be.eql(newExpedicao);
           done(err);
@@ -95,6 +96,7 @@ describe('Route: Expedicoes', () => {
       request
         .put(`/api/v1/expedicoes/${defaultExpedicao._id}`)
         .send(updatedExpedicao)
+        .expect(200)
         .end((err, res) => {
           expect(res.body).to.be.eql({ n: 1, nModified: 1, ok: 1 });
           done(err);
@@ -106,8 +108,8 @@ describe('Route: Expedicoes', () => {
     it('should delete an expedicao', (done) => {
       request
         .delete(`/api/v1/expedicoes/${defaultExpedicao._id}`)
-        .end((err, res) => {
-          expect(res.status).to.be.eql(204);
+        .expect(204)
+        .end((err) => {
           done(err);
         });
     });

@@ -22,7 +22,7 @@ class ExpedicaoController {
   }
 
   update(req, res) {
-    return this.Expedicao.update(req.params.expedicao_id, req.body)
+    return this.Expedicao.update({ _id: req.params.expedicao_id }, req.body)
       .then(rowsUpdated => res.send(rowsUpdated))
       .catch(err => res.status(412).send(err.message));
   }
