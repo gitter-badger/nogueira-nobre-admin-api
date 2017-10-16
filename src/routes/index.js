@@ -12,7 +12,7 @@ router.get('/api/v1', (req, res) => res.send('Nogueira Nobre V1 API'));
 router.use('/api/v1/auth', authRotue);
 router.use('/api/v1/expedicoes', expedicaoRoute);
 router.use('/api/v1/users', userRoute);
-router.use('/api/v1/email/bancocotacao', emailBancoCotacaoRoute);
+router.use('/api/v1/email/banco-de-cotacao', emailBancoCotacaoRoute);
 router.use('/api/v1/email/nogueira-nobre', emailNogueiraNobre);
 
 export default router;
