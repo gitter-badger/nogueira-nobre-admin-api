@@ -16,7 +16,6 @@
     "sinon": true
   },
   "rules": {
-    "semi": 2,
     "no-underscore-dangle": "off",
     "no-param-reassign": "off"
   }
