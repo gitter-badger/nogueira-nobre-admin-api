@@ -48,7 +48,7 @@ function sendEmailBancoCotacaoContato(req, res) {
 
 function sendEmailBancoCotacaoCotacao(req, res) {
   return new Promise((resolve, reject) => {
-    if (!req.body.name || !req.body.file || req.body.toAddress) {
+    if (!req.body.name || !req.body.tel || !req.file || req.body.toAddress) {
       res.status(412).send({ err: true, msg: 'Nome ou arquivo não foram preenchidos.' });
       reject();
     } else {
@@ -60,7 +60,7 @@ function sendEmailBancoCotacaoCotacao(req, res) {
           req.body.toAddress,
         ],
         RawMessage: {
-          Data: `${req.body.file}`,
+          Data: `${req.file.path}`,
         },
       };
 
