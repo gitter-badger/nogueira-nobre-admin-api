@@ -127,7 +127,7 @@ describe('Controller: EmailBancoCotacao', () => {
         });
     });
 
-    it('Should return status code 412 if name of file is not provided', () => {
+    it('Should return status code 412 if name, file or toAddress is not provided', () => {
       const request = {
         body: {},
       };
