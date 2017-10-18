@@ -1,10 +1,15 @@
 import AWS from 'aws-sdk';
+import path from 'path';
+import nodemailer from 'nodemailer';
 
 function sendEmailBancoCotacaoContato(req, res) {
   return new Promise((resolve, reject) => {
     if (!req.body.name || !req.body.email || !req.body.msg) {
-      res.status(412).send({ err: true, msg: 'Nome, e-mail ou mensagem não foram preenchidos.' });
-      reject();
+      res.status(412)
+        .send({
+          err: true,
+          msg: 'Nome, e-mail ou mensagem não foram preenchidos.',
+        });
     } else {
       const awsSES = new AWS.SES();
 
@@ -47,31 +52,41 @@ function sendEmailBancoCotacaoContato(req, res) {
 }
 
 function sendEmailBancoCotacaoCotacao(req, res) {
+  console.log(req.file);
   return new Promise((resolve, reject) => {
-    if (!req.body.name || !req.body.tel || !req.file || req.body.toAddress) {
-      res.status(412).send({ err: true, msg: 'Nome ou arquivo não foram preenchidos.' });
-      reject();
+    if (!req.body.name || !req.body.tel || !req.file.path || !req.body.toAddress) {
+      res.status(412)
+        .send({
+          err: true,
+          msg: 'Parâmetros obrigatórios não foram preenchidos.',
+        });
     } else {
-      const awsSES = new AWS.SES();
+      // configure AWS SDK
+      AWS.config.loadFromPath(path.resolve(`${__dirname}/config/aws.config.json`));
+      // create Nodemailer SES transporter
+      const transporter = nodemailer.createTransport({
+        SES: new AWS.SES({
+          apiVersion: '2010-12-01',
+        }),
+      });
 
-      const params = {
-        Source: 'nao-responda@bancodecotacao.com.br',
-        Destinations: [
-          req.body.toAddress,
+      transporter.sendMail({
+        from: 'nao-responda@bancodecotacao.com.br',
+        to: req.body.toAddress,
+        subject: `Cotação ${req.body.name}`,
+        text: `
+              Nome: ${req.body.name}
+              Telefone: ${req.body.tel}
+              E-mail: ${req.body.email}`,
+        attachments: [
+          {
+            filename: req.file.originalname,
+            path: req.file.path,
+          },
         ],
-        RawMessage: {
-          Data: `${req.file.path}`,
-        },
-      };
-
-      awsSES.sendRawEmail(params, (err, data) => {
-        if (err) {
-          res.status(400).send({ err: true, msg: err });
-          reject();
-        } else {
-          res.send(data);
-          resolve();
-        }
+      }, (err, info) => {
+        console.log(info.envelope);
+        console.log(info.messageId);
       });
     }
   });

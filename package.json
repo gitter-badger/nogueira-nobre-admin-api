@@ -4,7 +4,7 @@
   "description": "Nogueira Nobre admin REST API",
   "main": "server.js",
   "scripts": {
-    "start": "babel-node ./server.js",
+    "start": "nodemon ./server.js --exec babel-node",
     "test": "npm run lint && npm run test_u && npm run test_i",
     "test_u": "node_modules/.bin/mocha --opts test/unit/mocha.opts test/unit/**/*_spec.js",
     "test_i": "node_modules/.bin/mocha --opts test/integration/mocha.opts test/integration/**/*_spec.js",
