@@ -60,7 +60,7 @@ function sendEmailBancoCotacaoCotacao(req, res) {
       });
   } else {
     // configure AWS SDK
-    AWS.config.loadFromPath(path.resolve(`${__dirname}/../../aws.config.json`));
+    AWS.config.loadFromPath(path.resolve('aws.config.json'));
     // create Nodemailer SES transporter
     const transporter = nodemailer.createTransport({
       SES: new AWS.SES({
