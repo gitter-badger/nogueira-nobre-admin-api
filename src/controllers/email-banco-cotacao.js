@@ -83,6 +83,9 @@ function sendEmailBancoCotacaoCotacao(req, res) {
         },
       ],
     }, (err, info) => {
+      if (err) {
+        res.status(400).send(err);
+      }
       res.status(200).send(info);
     });
   }
