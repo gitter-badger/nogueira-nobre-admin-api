@@ -52,44 +52,41 @@ function sendEmailBancoCotacaoContato(req, res) {
 }
 
 function sendEmailBancoCotacaoCotacao(req, res) {
-  console.log(req.file);
-  return new Promise((resolve, reject) => {
-    if (!req.body.name || !req.body.tel || !req.file.path || !req.body.toAddress) {
-      res.status(412)
-        .send({
-          err: true,
-          msg: 'Parâmetros obrigatórios não foram preenchidos.',
-        });
-    } else {
-      // configure AWS SDK
-      AWS.config.loadFromPath(path.resolve(`${__dirname}/config/aws.config.json`));
-      // create Nodemailer SES transporter
-      const transporter = nodemailer.createTransport({
-        SES: new AWS.SES({
-          apiVersion: '2010-12-01',
-        }),
+  if (!req.body.name || !req.body.tel || !req.file.path || !req.body.toAddress) {
+    res.status(412)
+      .send({
+        err: true,
+        msg: 'Parâmetros obrigatórios não foram preenchidos.',
       });
+  } else {
+    // configure AWS SDK
+    AWS.config.loadFromPath(path.resolve(`${__dirname}/config/aws.config.json`));
+    // create Nodemailer SES transporter
+    const transporter = nodemailer.createTransport({
+      SES: new AWS.SES({
+        apiVersion: '2010-12-01',
+      }),
+    });
 
-      transporter.sendMail({
-        from: 'nao-responda@bancodecotacao.com.br',
-        to: req.body.toAddress,
-        subject: `Cotação ${req.body.name}`,
-        text: `
+    transporter.sendMail({
+      from: 'nao-responda@bancodecotacao.com.br',
+      to: req.body.toAddress,
+      subject: `Cotação ${req.body.name}`,
+      text: `
               Nome: ${req.body.name}
               Telefone: ${req.body.tel}
               E-mail: ${req.body.email}`,
-        attachments: [
-          {
-            filename: req.file.originalname,
-            path: req.file.path,
-          },
-        ],
-      }, (err, info) => {
-        console.log(info.envelope);
-        console.log(info.messageId);
-      });
-    }
-  });
+      attachments: [
+        {
+          filename: req.file.originalname,
+          path: req.file.path,
+        },
+      ],
+    }, (err, info) => {
+      console.log(info.envelope);
+      console.log(info.messageId);
+    });
+  }
 }
 
 const emailController = {
