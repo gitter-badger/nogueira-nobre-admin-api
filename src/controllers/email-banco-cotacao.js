@@ -52,7 +52,7 @@ function sendEmailBancoCotacaoContato(req, res) {
 }
 
 function sendEmailBancoCotacaoCotacao(req, res) {
-  if (!req.body.name || !req.body.tel || !req.file.path || !req.body.toAddress || req.body.orgao) {
+  if (!req.body.name || !req.body.tel || !req.file.path || !req.body.toAddress || !req.body.orgao) {
     res.status(412)
       .send({
         err: true,
