@@ -52,7 +52,8 @@ function sendEmailBancoCotacaoContato(req, res) {
 }
 
 function sendEmailBancoCotacaoCotacao(req, res) {
-  if (!req.body.name || !req.body.tel || !req.file.path || !req.body.toAddress) {
+  if (!req.body.name || !req.body.tel || !req.file.path || !req.body.toAddress
+    || !req.body.orgao || !req.body.cnpj) {
     res.status(412)
       .send({
         err: true,
@@ -75,7 +76,9 @@ function sendEmailBancoCotacaoCotacao(req, res) {
       text: `
               Nome: ${req.body.name}
               Telefone: ${req.body.tel}
-              E-mail: ${req.body.email}`,
+              E-mail: ${req.body.email}
+              Orgao: ${req.body.orgao}
+              CNPJ: ${req.body.cnpj}`,
       attachments: [
         {
           filename: req.file.originalname,
