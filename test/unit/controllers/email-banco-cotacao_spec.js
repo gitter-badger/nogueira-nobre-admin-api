@@ -1,31 +1,30 @@
 import AWS from 'aws-sdk';
+import nodemailer from 'nodemailer';
 import emailController from '../../../src/controllers/email-banco-cotacao';
 
 describe('Controller: EmailBancoCotacao', () => {
-  const defaultResponse = {
-    send: sinon.spy(),
-  };
-
-  AWS.SES.prototype.sendEmail = sinon.stub();
-  AWS.SES.prototype.sendRawEmail = sinon.stub();
-
   describe('sendEmailBancoCotacaoContato()', () => {
-    const defaultRequest = {
-      body: {
-        name: 'Tiao',
-        email: 'tiao@gmail.com',
-        tel: '62996810057',
-        msg: 'viiiila!',
-        toAddress: 'teste@bancodecotacao.com.br',
-      },
-    };
+    it('Should send an email', (done) => {
+      const request = {
+        body: {
+          name: 'Tiao',
+          email: 'tiao@gmail.com',
+          tel: '62996810057',
+          msg: 'viiiila!',
+          toAddress: 'teste@bancodecotacao.com.br',
+        },
+      };
 
-    it('Should send an email from nao-responda@bancocotacao.com.br to requested email', () => {
+      const response = {
+        send: sinon.spy(),
+        status: sinon.stub(),
+      };
+
       const params = {
         Source: 'nao-responda@bancodecotacao.com.br',
         Destination: {
           ToAddresses: [
-            defaultRequest.body.toAddress,
+            request.body.toAddress,
           ],
         },
         Message: {
@@ -33,31 +32,34 @@ describe('Controller: EmailBancoCotacao', () => {
             Text: {
               Charset: 'UTF-8',
               Data: `
-                    Nome: ${defaultRequest.body.name}
-                    E-mail: ${defaultRequest.body.email}
-                    Telefone: ${defaultRequest.body.tel}
-                    Mensagem: ${defaultRequest.body.msg}`,
+                    Nome: ${request.body.name}
+                    E-mail: ${request.body.email}
+                    Telefone: ${request.body.tel}
+                    Mensagem: ${request.body.msg}`,
             },
           },
           Subject: {
             Charset: 'UTF-8',
-            Data: `Contato ${defaultRequest.body.name}`,
+            Data: `Contato ${request.body.name}`,
           },
         },
       };
 
+      AWS.SES.prototype.sendEmail = sinon.stub();
+      AWS.SES.prototype.sendRawEmail = sinon.stub();
       AWS.SES.prototype.sendEmail.yields(false, { messageID: '123-abc' }); // Return of sendEmail callback
+      response.status.withArgs(200).returns(response);
 
       const awsSES = new AWS.SES();
       awsSES.sendEmail.withArgs(params);
 
-      return emailController.sendEmailBancoCotacaoContato(defaultRequest, defaultResponse)
-        .then(() => {
-          sinon.assert.calledWith(defaultResponse.send, { messageID: '123-abc' });
-        });
+      emailController.sendEmailBancoCotacaoContato(request, response);
+      sinon.assert.calledWith(response.status, 200);
+      sinon.assert.calledWith(response.send, { messageID: '123-abc' });
+      done();
     });
 
-    it('Should return status code 412 when missing name, email or msg from request', () => {
+    it('Should return status code 412 when missing name, email or msg from request', (done) => {
       const request = {
         body: {},
       };
@@ -69,13 +71,23 @@ describe('Controller: EmailBancoCotacao', () => {
 
       response.status.withArgs(412).returns(response);
 
-      return emailController.sendEmailBancoCotacaoContato(request, response)
-        .catch(() => {
-          sinon.assert.calledWith(response.send, { err: true, msg: 'Nome, e-mail ou mensagem não foram preenchidos.' });
-        });
+      emailController.sendEmailBancoCotacaoContato(request, response);
+      sinon.assert.calledWith(response.status, 412);
+      sinon.assert.calledWith(response.send, { err: true, msg: 'Nome, e-mail ou mensagem não foram preenchidos.' });
+      done();
     });
 
-    it('Should return status code 400 when an error occurs in AWS SES', () => {
+    it('Should return status code 400 when an error occurs in AWS SES', (done) => {
+      const request = {
+        body: {
+          name: 'Tiao',
+          email: 'tiao@gmail.com',
+          tel: '62996810057',
+          msg: 'viiiila!',
+          toAddress: 'teste@bancodecotacao.com.br',
+        },
+      };
+
       const response = {
         send: sinon.spy(),
         status: sinon.stub(),
@@ -83,51 +95,79 @@ describe('Controller: EmailBancoCotacao', () => {
 
       response.status.withArgs(400).returns(response);
 
+      AWS.SES.prototype.sendEmail = sinon.stub();
+      AWS.SES.prototype.sendRawEmail = sinon.stub();
       AWS.SES.prototype.sendEmail.yields('Error', null); // Return of sendEmail callback
 
       const awsSES = new AWS.SES();
       awsSES.sendEmail.withArgs({});
 
-      return emailController.sendEmailBancoCotacaoContato(defaultRequest, response)
-        .catch(() => {
-          sinon.assert.calledWith(response.send, { err: true, msg: 'Error' });
-          sinon.assert.calledWith(response.status, 400);
-        });
+      emailController.sendEmailBancoCotacaoContato(request, response);
+      sinon.assert.calledWith(response.status, 400);
+      sinon.assert.calledWith(response.send, { err: true, msg: 'Error' });
+      done();
     });
   });
 
   describe('sendEmailBancoCotacaoCotacao()', () => {
-    const defaultRequest = {
-      body: {
-        name: 'Tiao',
-        file: 'planilha.xls',
-        toAddress: 'teste@bancodecotacao.com.br',
-      },
-    };
-
-    it('Should send an email from nao-responda@bancodecotacao to requested email', () => {
-      const params = {
-        Source: 'nao-responda@bancodecotacao.com.br',
-        Destinations: [
-          defaultRequest.body.toAddress,
-        ],
-        RawMessage: {
-          Data: {},
+    it('Should send an email', (done) => {
+      const request = {
+        body: {
+          name: 'Tiao',
+          tel: '62996810057',
+          email: 'teste@teste.com',
+          orgao: 'Orgao teste',
+          cnpj: '22904368000117',
+          toAddress: 'teste@bancodecotacao.com.br',
+        },
+        file: {
+          originalname: 'planilha.xls ',
+          path: '/home/projeto/planilha.xls',
         },
       };
 
-      AWS.SES.prototype.sendRawEmail.yields(false, { messageID: '123-abc' }); // Return of sendRawEmail callback
+      const response = {
+        send: sinon.spy(),
+        status: sinon.stub(),
+      };
 
-      const awsSES = new AWS.SES();
-      awsSES.sendRawEmail.withArgs(params);
+      const params = {
+        from: 'nao-responda@bancodecotacao.com.br',
+        to: request.body.toAddress,
+        subject: `Cotação ${request.body.name}`,
+        text: `
+                  Nome: ${request.body.name}
+                  Telefone: ${request.body.tel}
+                  E-mail: ${request.body.email}
+                  Orgao: ${request.body.orgao}
+                  CNPJ: ${request.body.cnpj}`,
+        attachments: [
+          {
+            filename: request.file.originalname,
+            path: request.file.path,
+          },
+        ],
+      };
 
-      return emailController.sendEmailBancoCotacaoCotacao(defaultRequest, defaultResponse)
-        .then(() => {
-          sinon.assert.calledWith(defaultResponse.send, { messageID: '123-abc' });
-        });
+      const transporter = nodemailer.createTransport({
+        SES: new AWS.SES({
+          apiVersion: '2010-12-01',
+        }),
+      });
+
+      transporter.sendMail = sinon.stub();
+      transporter.sendMail.withArgs(params).yields(null, { received: true });
+      response.status.withArgs(200).returns(response);
+
+      emailController.sendEmailBancoCotacaoCotacao(request, response);
+      setTimeout(() => {
+        sinon.assert.calledWith(response.status, 200);
+        sinon.assert.calledWith(response.send, { received: true });
+      }, 1 * 1000);
+      done();
     });
 
-    it('Should return status code 412 if name, file or toAddress is not provided', () => {
+    it('Should return status code 412 if name, file or toAddress is not provided', (done) => {
       const request = {
         body: {},
       };
@@ -139,31 +179,51 @@ describe('Controller: EmailBancoCotacao', () => {
 
       response.status.withArgs(412).returns(response);
 
-      return emailController.sendEmailBancoCotacaoCotacao(request, response)
-        .catch(() => {
-          sinon.assert.calledWith(response.send, { err: true, msg: 'Nome ou arquivo não foram preenchidos.' });
-          sinon.assert.calledWith(response.status, 412);
-        });
+      emailController.sendEmailBancoCotacaoCotacao(request, response);
+      sinon.assert.calledWith(response.status, 412);
+      sinon.assert.calledWith(response.send, { err: true, msg: 'Parâmetros obrigatórios não foram preenchidos.' });
+      done();
     });
 
-    it('Should return status code 400 when AWS SES return with an error', () => {
+    it('Should return status code 400 when AWS SES return with an error', (done) => {
+      const request = {
+        body: {
+          name: 'Tiao',
+          tel: '62996810057',
+          email: 'teste@teste.com',
+          orgao: 'Orgao teste',
+          cnpj: '22904368000117',
+          toAddress: 'teste@bancodecotacao.com.br',
+        },
+        file: {
+          originalname: 'planilha.xls ',
+          path: '/home/projeto/planilha.xls',
+        },
+      };
+
       const response = {
         send: sinon.spy(),
         status: sinon.stub(),
       };
 
-      AWS.SES.prototype.sendRawEmail = sinon.stub();
-      AWS.SES.prototype.sendRawEmail.yields('Error', null); // Return of sendRawEmail callback
 
-      const awsSES = new AWS.SES();
-      awsSES.sendRawEmail.withArgs({});
+      const transporter = nodemailer.createTransport({
+        SES: new AWS.SES({
+          apiVersion: '2010-12-01',
+        }),
+      });
+
+      transporter.sendMail = sinon.stub();
+      transporter.sendMail.withArgs({}).yields('Error', null);
+
       response.status.withArgs(400).returns(response);
 
-      return emailController.sendEmailBancoCotacaoCotacao(defaultRequest, response)
-        .catch(() => {
-          sinon.assert.calledWith(response.send, { err: true, msg: 'Error' });
-          sinon.assert.calledWith(response.status, 400);
-        });
+      emailController.sendEmailBancoCotacaoCotacao(request, response);
+      setTimeout(() => {
+        sinon.assert.calledWith(response.status, 400);
+        sinon.assert.calledWith(response.send, 'Error');
+      }, 1 * 1000);
+      done();
     });
   });
 });
