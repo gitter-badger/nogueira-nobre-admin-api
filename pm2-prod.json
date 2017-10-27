@@ -3,7 +3,6 @@
       "name"        : "teste-api",
       "script"      : "./start.js",
       "env": {
-        "MONGODB_URL": "mongodb://nogueira-nobre:nogueira-nobre@ds153669.mlab.com:53669/nogueira-nobre",
         "NODE_PORT": "4000"
       }
     }]
