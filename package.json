@@ -8,7 +8,6 @@
     "test": "npm run lint && npm run test_u && npm run test_i",
     "test_u": "node_modules/.bin/mocha --opts test/unit/mocha.opts test/unit/**/*_spec.js",
     "test_i": "node_modules/.bin/mocha --opts test/integration/mocha.opts test/integration/**/*_spec.js",
-    "test_c": "node_modules/.bin/mocha --opts test/contract/mocha.opts test/contract/**/*_spec.js",
     "lint": "node_modules/.bin/eslint '**/*.js'",
     "lint_fix": "node_modules/.bin/eslint '**/*.js' --fix"
   },
@@ -39,6 +38,7 @@
     "jwt-simple": "^0.5.1",
     "mongoose": "^4.11.9",
     "multer": "^1.3.0",
+    "newrelic": "^2.3.1",
     "nodemailer": "^4.2.0",
     "passport": "^0.3.2",
     "passport-jwt": "^2.2.1"

@@ -16,7 +16,7 @@
     "sinon": true
   },
   "rules": {
-    "no-underscore-dangle": "off",
-    "no-param-reassign": "off"
+    "no-underscore-dangle": 1,
+    "no-param-reassign": 2
   }
 }
