@@ -8,13 +8,15 @@
     "request": true,
     "expect": true,
     "before": true,
+    "after": true,
+    "Joi": true,
+    "joiAssert": true,
     "beforeEach": true,
     "afterEach": true,
     "sinon": true
   },
   "rules": {
-    "semi": 2,
-    "no-underscore-dangle": "off",
-    "no-param-reassign": "off"
+    "no-underscore-dangle": 1,
+    "no-param-reassign": 2
   }
 }

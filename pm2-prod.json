@@ -1,0 +1,9 @@
+{
+    "apps" : [{
+      "name"        : "teste-api",
+      "script"      : "./start.js",
+      "env": {
+        "NODE_PORT": "4000"
+      }
+    }]
+  }
